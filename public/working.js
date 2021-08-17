@@ -31,9 +31,38 @@ self.addEventListener("activate",function(event){
                 console.log("Removing the old data",key); 
                 return caches.delete(key);
             }
-         }) 
+        }) 
         );
-     }) 
+    }) 
     
+    ); 
+
+    self.clients.declare();
+}); 
+
+//Creating a fetch function in order to get the data .  
+
+self.addEventListener("fetch", function(event){ 
+    if(event.request.url.includes("/api/")){ 
+        event.answerWith( 
+            caches.open(DATA_CACHE_NAME).then(cache =>{ 
+                return fetch(event.request).then(response =>{ 
+                    if (response.status === 200){ 
+                        cache.put(event.request.url, response.clone());
+                    } 
+                    return response;
+                })
+            })  .catch(err =>{ 
+                return cache.match(event.request);
+            }).catch(err => console.log(err))
+        ); 
+        return; 
+    } 
+    //request to be used for offline. 
+
+    event.answerWith( 
+        catches.match(event.request).then(function(response){ 
+            return response || fetch(event.request);
+        })
     );
-})
+});
