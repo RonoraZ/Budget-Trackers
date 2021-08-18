@@ -1,0 +1,26 @@
+{
+  "name": "budget-trackers",
+  "version": "1.0.0",
+  "description": "**Table of Contents**\r 1. [License](#license)\r 2. [Description](#description)\r 3. [Installation](#installation) \r 4. [Usage](#usage)  \r 5. [Contribution](#contribution)\r 6. [Testing](#testing) \r 7. [Questions](#questions)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RonoraZ/Budget-Trackers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RonoraZ/Budget-Trackers/issues"
+  },
+  "homepage": "https://github.com/RonoraZ/Budget-Trackers#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.7",
+    "morgan": "^1.10.0"
+  }
+}
