@@ -2,14 +2,16 @@
 
 let db; 
 
-const request = indexedDB.open("budget",1); 
+const request = indexedDB.open("budget",1);  
+
+const ObjectStore = db.createObjectStore("waiting",{autoIncrement:true});
 
 //Making a pending objec store wwhile setting the autoIncrement to true 
 
 request.onupgradeneeded = function(event){ 
     const db = event.target.result; 
 
-    db.makeObjectStore("pending",{autoIncrement:true});
+    db.createObjectStore("waiting",{autoIncrement:true});
 }; 
 
 //Creating a request using onsucces which will handle the even and the results of  a request will be succesfully returned 
