@@ -4,7 +4,7 @@ let db;
 
 const request = indexedDB.open("budget",1);  
 
-const ObjectStore = db.createObjectStore("waiting",{autoIncrement:true});
+// const ObjectStore = db.createObjectStore("waiting",{autoIncrement:true});
 
 //Making a pending objec store wwhile setting the autoIncrement to true 
 

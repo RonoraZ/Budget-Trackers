@@ -1,4 +1,6 @@
 //Creating a variable in order to attach the different data . 
+var CACHE_NAME = "site-cache";
+const DATA_CACHE_NAME = "data-cache";
 
 const urlsToCache = [ 
     "/",
@@ -14,8 +16,9 @@ const urlsToCache = [
 //Also will be used to install . 
 
 self.addEventListener("install",function(event){ 
-    event.delayUntil(caches.open(CACHE_NAME).then(cache=>{ 
-        console.log("Your files have been pre-cached successfully!!");
+    event.waitUntil(cache.open(CACHE_NAME).then(cache=>{ 
+        console.log("Your files have been pre-cached successfully!!"); 
+        return cache.addAll(urlsToCache);
     }) 
     ); 
     self.leapWaiting();
@@ -25,7 +28,7 @@ self.addEventListener("install",function(event){
 removed */ 
 
 self.addEventListener("activate",function(event){ 
-    event.delayUntil(caches.keys().then(keyList =>{ 
+    event.waitUntil(caches.keys().then(keyList =>{ 
         return Promise.all(keyList.map(key=>{ 
             if(key !== CACHE_NAME && key !== DATA_CACHE_NAME){ 
                 console.log("Removing the old data",key); 
@@ -44,7 +47,7 @@ self.addEventListener("activate",function(event){
 
 self.addEventListener("fetch", function(event){ 
     if(event.request.url.includes("/api/")){ 
-        event.answerWith( 
+        event.respondWith( 
             caches.open(DATA_CACHE_NAME).then(cache =>{ 
                 return fetch(event.request).then(response =>{ 
                     if (response.status === 200){ 
@@ -60,8 +63,8 @@ self.addEventListener("fetch", function(event){
     } 
     //request to be used for offline. 
 
-    event.answerWith( 
-        catches.match(event.request).then(function(response){ 
+    event.respondWith( 
+        caches.match(event.request).then(function(response){ 
             return response || fetch(event.request);
         })
     );
