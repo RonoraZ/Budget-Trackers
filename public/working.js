@@ -1,3 +1,5 @@
+// const { response } = require("express");
+
 //Creating a variable in order to attach the different data . 
 var CACHE_NAME = "site-cache";
 const DATA_CACHE_NAME = "data-cache";
@@ -16,12 +18,12 @@ const urlsToCache = [
 //Also will be used to install . 
 
 self.addEventListener("install",function(event){ 
-    event.waitUntil(cache.open(CACHE_NAME).then(cache=>{ 
+    event.waitUntil(caches.open(CACHE_NAME).then(caches=>{ 
         console.log("Your files have been pre-cached successfully!!"); 
-        return cache.addAll(urlsToCache);
+        return caches.addAll(urlsToCache);
     }) 
     ); 
-    self.leapWaiting();
+    self.skipWaiting();
 }); 
 
 /*Creating an addevnetlistner in order to get the cache data and be 
@@ -40,7 +42,7 @@ self.addEventListener("activate",function(event){
     
     ); 
 
-    self.clients.declare();
+    self.clients.claim();
 }); 
 
 //Creating a fetch function in order to get the data .  
@@ -62,10 +64,22 @@ self.addEventListener("fetch", function(event){
         return; 
     } 
     //request to be used for offline. 
+    
+    // respondWith(); 
+    // evt.respondWith(
+    //     caches.open(CACHE_NAME).then(cache => {
+    //       return cache.match(evt.request).then(response => {
+    //         return response || fetch(evt.request);
+    //       });
+    //     })
+    
+
 
     event.respondWith( 
-        caches.match(event.request).then(function(response){ 
-            return response || fetch(event.request);
-        })
+       caches.open(CACHE_NAME).then(cache =>{ 
+           return cache.match(event.request).then(response=>{ 
+            return response || fetch(event.request);   
+           })
+       })
     );
 });

@@ -20,7 +20,7 @@ request.onsuccess = function(event){
     db = event.target.result; 
 
     if(navigator .onLine){ 
-        inspectDataBase();
+        checkDataBase();
     }
 }; 
 
@@ -34,11 +34,11 @@ request.onerror = function (event){
 access . With that access it will access the pending object store and will add 
 the method that is being used for it .*/
 
-function conserveRecord(record){ 
+function saveRecord(record){ 
     const transaction = db.transaction("waiting","readwrite"); 
 
-    const save = transaction.ObjectStore("waiting"); 
-
+    const save = transaction.objectStore("waiting"); 
+    // console.log("hi",transaction.ObjectStore);
     save.add(record); 
 } 
 
@@ -47,11 +47,11 @@ acces to the object store and by using a variable we created in order to get all
 records from the store . If these promises are met you can get your database and clear all your items 
 from the store.*/ 
 
-function inspectDataBase(){ 
+function checkDataBase(){ 
     const transaction = db.transaction("waiting","readwrite"); 
 
-    const save = transaction.ObjectStore("waiting"); 
-
+    const save = transaction.objectStore("waiting"); 
+    // console.log("hello",transaction.ObjectStore);
     const getAll = save.getAll(); 
 
     getAll.onsuccess = function(){ 
@@ -77,4 +77,4 @@ function inspectDataBase(){
 } 
 //This is for the app can be used online 
 
-window.addEventListener('online',inspectDataBase);
+window.addEventListener('online',checkDataBase);
